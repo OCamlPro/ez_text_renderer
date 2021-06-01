@@ -4,7 +4,8 @@
   (name ez_text_renderer)
   (public_name ez_text_renderer)
   (wrapped false)
-  (libraries )
+  (libraries  )
+  
   
   (foreign_stubs
     (language c)

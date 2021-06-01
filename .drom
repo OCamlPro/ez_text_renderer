@@ -2,17 +2,42 @@
 
 # hash of toml configuration files
 # used for generation of all files
-81fe12f95f75b598a66beba637d9e9ce:.
+8d4885d52d365301e206678d247d5bb8:.
 # end context for .
+
+# begin context for .github/workflows/doc-deploy.yml
+# file .github/workflows/doc-deploy.yml
+7558df66cdc677d162f5790de356ebec:.github/workflows/doc-deploy.yml
+# end context for .github/workflows/doc-deploy.yml
+
+# begin context for .github/workflows/workflow.yml
+# file .github/workflows/workflow.yml
+cc14f0a73339fe995656097794d4123a:.github/workflows/workflow.yml
+# end context for .github/workflows/workflow.yml
 
 # begin context for .gitignore
 # file .gitignore
 e7cbe71efecd4d9875b409517a22874e:.gitignore
 # end context for .gitignore
 
+# begin context for .ocamlformat
+# file .ocamlformat
+51f788c6dcd47d33ffec6427b686ed4f:.ocamlformat
+# end context for .ocamlformat
+
+# begin context for .ocamlformat-ignore
+# file .ocamlformat-ignore
+a8d1bcd6f62c6b813b77d3ff8959d8d2:.ocamlformat-ignore
+# end context for .ocamlformat-ignore
+
+# begin context for .ocp-indent
+# file .ocp-indent
+6048407431b8d9baf725ae5365d4c2f2:.ocp-indent
+# end context for .ocp-indent
+
 # begin context for CHANGES.md
 # file CHANGES.md
-2b5f637165c3deb3b50e62e9d5c851c2:CHANGES.md
+682451bcdaae4f43f1f73f2b7b22b6b1:CHANGES.md
 # end context for CHANGES.md
 
 # begin context for LICENSE.md
@@ -22,7 +47,7 @@ e7cbe71efecd4d9875b409517a22874e:.gitignore
 
 # begin context for Makefile
 # file Makefile
-9c23cda2cb9fa1635f58ef81d2a0c0bd:Makefile
+a3d0ee9c96d0f84f1d86ec84c76e8616:Makefile
 # end context for Makefile
 
 # begin context for README.md
@@ -30,9 +55,39 @@ e7cbe71efecd4d9875b409517a22874e:.gitignore
 1559a24c9dade8d847b046bab3b796ea:README.md
 # end context for README.md
 
+# begin context for docs/README.txt
+# file docs/README.txt
+bfbacf00053bb9ab2a6e2ce94ed4a642:docs/README.txt
+# end context for docs/README.txt
+
+# begin context for docs/doc/index.html
+# file docs/doc/index.html
+8877fab98f27949deadcbb2c3d9603a3:docs/doc/index.html
+# end context for docs/doc/index.html
+
+# begin context for docs/favicon.png
+# file docs/favicon.png
+e739f3026aa997af4026bc428f4c9ef6:docs/favicon.png
+# end context for docs/favicon.png
+
+# begin context for docs/index.html
+# file docs/index.html
+21da9b5e270819bb5d3f2e005a64a309:docs/index.html
+# end context for docs/index.html
+
+# begin context for docs/sphinx/index.html
+# file docs/sphinx/index.html
+4e78d83a80f72e95969d2b39779e9d77:docs/sphinx/index.html
+# end context for docs/sphinx/index.html
+
+# begin context for docs/style.css
+# file docs/style.css
+c8281f46ba9a11d0b61bc8ef67eaa357:docs/style.css
+# end context for docs/style.css
+
 # begin context for drom.toml
 # file drom.toml
-070ce11c20bef6c314ac607d8c2c5519:drom.toml
+0455a902949645fd44ce4a9126ddbc5d:drom.toml
 # end context for drom.toml
 
 # begin context for dune
@@ -42,12 +97,12 @@ e7cbe71efecd4d9875b409517a22874e:.gitignore
 
 # begin context for dune-project
 # file dune-project
-3063b33b0b356398c1e44e6fe3f67daf:dune-project
+2a6657aede30a34b991b442abbabcd08:dune-project
 # end context for dune-project
 
 # begin context for ez_text_renderer.opam
 # file ez_text_renderer.opam
-11350347225d0f214ed1c922a1c6c405:ez_text_renderer.opam
+753a65b3cd2a477b9f3467f7c6b6a8b6:ez_text_renderer.opam
 # end context for ez_text_renderer.opam
 
 # begin context for scripts/after.sh
@@ -65,17 +120,52 @@ ae050b3099ac0b43d7c7f4295f6b2319:scripts/before.sh
 bb3a9d286f0dc64021db4194427263ee:scripts/copy-bin.sh
 # end context for scripts/copy-bin.sh
 
+# begin context for sphinx/_static/css/fixes.css
+# file sphinx/_static/css/fixes.css
+20bbe7a5dbb3c3278a1511d960616fe5:sphinx/_static/css/fixes.css
+# end context for sphinx/_static/css/fixes.css
+
+# begin context for sphinx/about.rst
+# file sphinx/about.rst
+acdae82c74839f24c737d48bd15780f6:sphinx/about.rst
+# end context for sphinx/about.rst
+
+# begin context for sphinx/conf.py
+# file sphinx/conf.py
+fc7191d56942df415585f87313d76ee5:sphinx/conf.py
+# end context for sphinx/conf.py
+
+# begin context for sphinx/index.rst
+# file sphinx/index.rst
+eeaa509a34115eee2bbc3f0584807009:sphinx/index.rst
+# end context for sphinx/index.rst
+
+# begin context for sphinx/install.rst
+# file sphinx/install.rst
+7f19c73c289ed96d5af9a291e4bda4e1:sphinx/install.rst
+# end context for sphinx/install.rst
+
+# begin context for sphinx/license.rst
+# file sphinx/license.rst
+89cf35fa99318606314766eb980a3926:sphinx/license.rst
+# end context for sphinx/license.rst
+
 # begin context for src/ez_text_renderer/dune
 # file src/ez_text_renderer/dune
-3972e1e4f7dacf6ac3efbe5d42fb8acb:src/ez_text_renderer/dune
+8db93f90078e768f221ce21be3fadfe4:src/ez_text_renderer/dune
 # end context for src/ez_text_renderer/dune
+
+# begin context for src/ez_text_renderer/index.mld
+# file src/ez_text_renderer/index.mld
+00746ba74251d5e440546709af09a597:src/ez_text_renderer/index.mld
+# end context for src/ez_text_renderer/index.mld
 
 # begin context for src/ez_text_renderer/package.toml
 # file src/ez_text_renderer/package.toml
-667f99dbd0b6b5ed650ea6f4668c9a8b:src/ez_text_renderer/package.toml
+60eba776c11a86a39124748300d12dc9:src/ez_text_renderer/package.toml
 # end context for src/ez_text_renderer/package.toml
 
 # begin context for src/ez_text_renderer/version.mlt
 # file src/ez_text_renderer/version.mlt
-e5152b4b8b0489050db1e38339e55a7e:src/ez_text_renderer/version.mlt
+427eb03e081b937f54c2f8a1a4ff31b1:src/ez_text_renderer/version.mlt
 # end context for src/ez_text_renderer/version.mlt

@@ -10,7 +10,7 @@
 (*                                                                        *)
 (**************************************************************************)
 
-(** TextRenderer library
+(** EzTextRenderer library
 
     This modules allows to perform text rendering of (UTF-8 encoded)
     Unicode strings to standard OCaml arrays. It is based on the
@@ -25,11 +25,11 @@
     A typical usage is as follows:
 
 {[
-    open TextRenderer
+    open EzTextRenderer
 
-    let black = \{ blue = 0x00; green = 0x00; red = 0x00; alpha = 0xFF \}
-    let grey = \{ blue = 0x80; green = 0x80; red = 0x80; alpha = 0xFF \}
-    let white = \{ blue = 0xFF; green = 0xFF; red = 0xFF; alpha = 0xFF \}
+    let black = { blue = 0x00; green = 0x00; red = 0x00; alpha = 0xFF }
+    let grey = { blue = 0x80; green = 0x80; red = 0x80; alpha = 0xFF }
+    let white = { blue = 0xFF; green = 0xFF; red = 0xFF; alpha = 0xFF }
 
     let () =
       init ();
@@ -42,12 +42,12 @@
 
       let txt_width = compute_text_width text in
 
-      let img_size = \{ width = txt_width + 16; height = txt_height + 16 \} in
+      let img_size = { width = txt_width + 16; height = txt_height + 16 } in
 
       let image = Array.make (img_size.height * img_size.width) grey in
 
       render_text text black white
-        \{ x = 8; y = 8; width = txt_width; height = txt_height \}
+        { x = 8; y = 8; width = txt_width; height = txt_height }
         image img_size;
 
       dump_image image img_size "img.ppm";
@@ -85,11 +85,11 @@ type area = {
 }
 
 
-(** Initialize the TextRenderer library. Must be called at least
+(** Initialize the EzTextRenderer library. Must be called at least
     once before calling any other function in this module. *)
 val init : unit -> unit
 
-(** Free the TextRenderer library. Call it once you're done using
+(** Free the EzTextRenderer library. Call it once you're done using
     the library. *)
 val release : unit -> unit
 

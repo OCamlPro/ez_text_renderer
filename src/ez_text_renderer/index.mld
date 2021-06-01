@@ -1,0 +1,11 @@
+{1 Library ez_text_renderer}
+
+
+EzTextRenderer is a library that allows to render Unicode text
+to OCaml arrays representing RGB images.
+
+
+
+This library exposes the following toplevel modules:
+{!modules:EzTextRenderer}
+
