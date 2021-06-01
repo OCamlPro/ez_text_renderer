@@ -111,7 +111,7 @@ tr_set_font(
     }
   } while ((height <
 	    (face->size->metrics.ascender +
-	     abs(face->size->metrics.descender)) >> 6) ||
+	     labs(face->size->metrics.descender)) >> 6) ||
            (height <
 	    (face->size->metrics.height) >> 6));
 
@@ -293,7 +293,7 @@ int tr_render_text(
   }
 
   int pen_x = x;
-  int pen_y = y + face->size->metrics.ascender >> 6;
+  int pen_y = y + (face->size->metrics.ascender >> 6);
 
   size_t len = wcslen(wc_text);
 
