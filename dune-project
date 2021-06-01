@@ -13,6 +13,7 @@
  (depends
    (ocaml (>= 4.07.0))
    (conf-freetype ( >= 1 ))
+   dune-configurator
    ppx_inline_test
    ppx_expect
    odoc

@@ -10,10 +10,13 @@
   (foreign_stubs
     (language c)
     (names stubs text_renderer)
-    (flags -I/usr/include/freetype2))
-  (c_library_flags (-lfreetype))
+    (flags (:include c_flags.sexp)))
+  (c_library_flags (:include c_library_flags.sexp))
   )
 
+(rule
+ (targets c_flags.sexp c_library_flags.sexp)
+ (action (run ./discover/discover.exe)))
 
 (rule
     (targets version.ml)
