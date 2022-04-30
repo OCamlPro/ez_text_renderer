@@ -174,6 +174,17 @@ ml_tr_render_text(
   if (data == NULL) {
     caml_raise_out_of_memory();
   }
+  for (int i = 0; (i < height) && (y + i < dest_height); ++i) {
+    for (int j = 0; (j < width) && (x + j < dest_width); ++j) {
+      int src_idx = (y + i) * dest_width + (x + j);
+      int dst_idx = (i * width + j) * BYTES_PER_PIXEL;
+      mlColor = Field(mlOutArray, src_idx);
+      data[dst_idx + 0] = Int_val(Field(mlColor, 0)); // blue
+      data[dst_idx + 1] = Int_val(Field(mlColor, 1)); // green
+      data[dst_idx + 2] = Int_val(Field(mlColor, 2)); // red
+      data[dst_idx + 3] = Int_val(Field(mlColor, 3)); // alpha
+    }
+  }
 
   int result =
     tr_render_text(text, front_color, back_color,

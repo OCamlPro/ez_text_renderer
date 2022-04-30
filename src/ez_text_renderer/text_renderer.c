@@ -44,6 +44,22 @@ mb_to_wc(
   return wc_text;
 }
 
+static void
+tr_alpha_blend(
+  uint32_t color,
+  uint8_t *dest)
+{
+  uint8_t a = alpha_of_int(color);
+  uint8_t r = red_of_int(color);
+  uint8_t g = green_of_int(color);
+  uint8_t b = blue_of_int(color);
+  uint8_t alpha = a + dest[3] * (0xFF - a) / 0xFF;
+  dest[0] = (b * a + dest[0] * dest[3] * (0xFF - a) / 0xFF) / alpha;
+  dest[1] = (g * a + dest[1] * dest[3] * (0xFF - a) / 0xFF) / alpha;
+  dest[2] = (r * a + dest[2] * dest[3] * (0xFF - a) / 0xFF) / alpha;
+  dest[3] = alpha;
+}
+
 int
 tr_init()
 {
@@ -147,7 +163,6 @@ tr_set_font(
   return TR_OK;
 }
 
-
 int
 tr_compute_text_width(
   const char *mb_text,
@@ -186,43 +201,41 @@ tr_compute_text_width(
   return TR_OK;
 }
 
-
 static void
 tr_draw_glyph(
   FT_GlyphSlot glyph,
-  uint32_t color,
+  uint32_t front_color,
+  uint32_t back_color,
   int pen_x,
   int pen_y,
-  int x,
-  int y,
   int w,
   int h,
-  uint8_t *dest,
-  int dw,
-  int dh)
+  uint8_t *dest)
 {
-  int lim_x = min(x + w, dw);
-  int lim_y = min(y + h, dh);
+  uint8_t fa = alpha_of_int(front_color);
+  uint8_t fr = red_of_int(front_color);
+  uint8_t fg = green_of_int(front_color);
+  uint8_t fb = blue_of_int(front_color);
 
-  uint8_t a = alpha_of_int(color);
-  uint8_t r = red_of_int(color);
-  uint8_t g = green_of_int(color);
-  uint8_t b = blue_of_int(color);
+  uint8_t ba = alpha_of_int(back_color);
+  uint8_t br = red_of_int(back_color);
+  uint8_t bg = green_of_int(back_color);
+  uint8_t bb = blue_of_int(back_color);
 
   for (int i = 0; i < glyph->bitmap.rows; ++i) {
 
     int di = pen_y - glyph->bitmap_top + i;
     if (di < 0) continue;
-    else if (di >= lim_y) break;
+    else if (di > h) break;
 
     for (int j = 0; j < glyph->bitmap.width; ++j) {
 
       int dj = pen_x + glyph->bitmap_left + j;
       if (dj < 0) continue;
-      else if (dj >= lim_x) break;
+      else if (dj > w) break;
 
       int s_idx = i * glyph->bitmap.pitch + j;
-      uint8_t alpha = glyph->bitmap.buffer[s_idx] * a / 0xFF;
+      uint8_t alpha = glyph->bitmap.buffer[s_idx];
 
       int d_idx;
 
@@ -234,20 +247,25 @@ tr_draw_glyph(
 
         case 0xFF:
           // Fully opaque pixel: no alpha computation
-          d_idx = (di * dw + dj) * BYTES_PER_PIXEL;
-          dest[d_idx + 0] = b;
-          dest[d_idx + 1] = g;
-          dest[d_idx + 2] = r;
-          dest[d_idx + 3] = 0xFF;
+          d_idx = (di * w + dj) * BYTES_PER_PIXEL;
+          dest[d_idx + 0] = fb;
+          dest[d_idx + 1] = fg;
+          dest[d_idx + 2] = fr;
+          dest[d_idx + 3] = fa;
           break;
 
-        default:
+        default: {
           // Semi-transparent pixel: apply alpha
-          d_idx = (di * dw + dj) * BYTES_PER_PIXEL;
+          uint8_t a = alpha_blend(alpha, fa, ba);
+          uint8_t r = alpha_blend(alpha, fr, br);
+          uint8_t g = alpha_blend(alpha, fg, bg);
+          uint8_t b = alpha_blend(alpha, fb, bb);
+          d_idx = (di * w + dj) * BYTES_PER_PIXEL;
           dest[d_idx + 0] = alpha_blend(alpha, b, dest[d_idx + 0]);
           dest[d_idx + 1] = alpha_blend(alpha, g, dest[d_idx + 1]);
           dest[d_idx + 2] = alpha_blend(alpha, r, dest[d_idx + 2]);
-          dest[d_idx + 3] = 0xFF;
+          dest[d_idx + 3] = alpha_blend(alpha, a, dest[d_idx + 3]);
+        }
       }
     }
   }
@@ -278,22 +296,27 @@ int tr_render_text(
     return TR_OUT_OF_MEMORY;
   }
 
+  int data_size = w * h * BYTES_PER_PIXEL;
+  uint8_t *temp_data = malloc(data_size * sizeof(uint8_t));
+  if (temp_data == NULL) {
+    free(wc_text);
+    return TR_OUT_OF_MEMORY;
+  }
+
+  int a = alpha_of_int(back_color);
   int r = red_of_int(back_color);
   int g = green_of_int(back_color);
   int b = blue_of_int(back_color);
 
-  for (int i = 0; (i < h) && (y + i < dh); ++i) {
-    for (int j = 0; (j < w) && (x + j < dw); ++j) {
-      int d_idx = ((y + i) * dw + (x + j)) * BYTES_PER_PIXEL;
-      data[d_idx + 0] = b;
-      data[d_idx + 1] = g;
-      data[d_idx + 2] = r;
-      data[d_idx + 3] = 0xFF; // alpha ignored on background color
-    }
+  for (int i = 0; i < data_size; i += 4) {
+    temp_data[i + 0] = b;
+    temp_data[i + 1] = g;
+    temp_data[i + 2] = r;
+    temp_data[i + 3] = a;
   }
 
-  int pen_x = x;
-  int pen_y = y + (face->size->metrics.ascender >> 6);
+  int pen_x = 0;
+  int pen_y = face->size->metrics.ascender >> 6;
 
   size_t len = wcslen(wc_text);
 
@@ -314,13 +337,27 @@ int tr_render_text(
       continue; // should try to support others
     }
 
-    tr_draw_glyph(face->glyph, front_color,
-                  pen_x, pen_y, x, y, w, h, data, dw, dh);
+    tr_draw_glyph(face->glyph, front_color, back_color,
+                  pen_x, pen_y, w, h, temp_data);
 
     pen_x += face->glyph->advance.x >> 6;
   }
 
   free(wc_text);
+
+  for (int i = 0; (i < h) && (y + i < dh); ++i) {
+    for (int j = 0; (j < w) && (x + j < dw); ++j) {
+      int src_idx = (i * w + j) * BYTES_PER_PIXEL;
+      int dst_idx = ((y + i) * dw + (x + j)) * BYTES_PER_PIXEL;
+      uint32_t color = argb_to_int(temp_data[src_idx + 3],
+                                   temp_data[src_idx + 2],
+                                   temp_data[src_idx + 1],
+                                   temp_data[src_idx + 0]);
+      tr_alpha_blend(color, data + dst_idx);
+    }
+  }
+
+  free(temp_data);
 
   return TR_OK;
 }
